@@ -57,4 +57,11 @@ class DjBot {
     client.stop();
     _logger.info('Stopped');
   }
+
+  DjBotDelegate delegateOf<DelegateType extends DjBotDelegate>() {
+    for (DjBotDelegate delegate in delegates)
+      if (delegate is DelegateType) return delegate;
+
+    throw ArgumentError('No such delegate');
+  }
 }
