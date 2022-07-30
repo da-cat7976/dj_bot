@@ -11,11 +11,20 @@ class OrderService extends DjBotDelegate {
 
   @override
   FutureOr<void> init() async {
-    _box = await Hive.openBox<Order>('orders');
+    Hive.registerAdapter(
+      OrderAdapter(),
+    );
+
+    _box = await Hive.openBox<Order>(
+      'orders',
+      path: './',
+    );
   }
 
   Future<void> add(Order order) async {
     await _box.add(order);
+
+    logger.info('Added new order');
 
     informOwner(order);
   }
@@ -44,7 +53,7 @@ class OrderService extends DjBotDelegate {
   void informOwner(Order order) {
     client.sendMessage(
       BotConfig.owner,
-      '${Emoji.bell} Новый заказ:\n\n'
+      '${Emoji.bell} Новый заказ\n\n'
       '${order.toMessage()}',
     );
   }

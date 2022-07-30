@@ -12,7 +12,7 @@ class OrderFromLink extends ListeningDjBotDelegate {
   FutureOr<void> init() {
     _service = delegateOf();
 
-    listen(stream: client.onTextLink(), listener: onLink);
+    listen(stream: client.onUrl(), listener: onLink);
   }
 
   void onLink(TeleDartMessage message) async {
@@ -22,7 +22,5 @@ class OrderFromLink extends ListeningDjBotDelegate {
       await message.reply(
         '${Emoji.disc} Заказ принят',
       );
-    else if (message.chat.type == 'private')
-      await message.reply('Кажется, я не умею работать с такими ссылками');
   }
 }

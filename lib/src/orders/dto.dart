@@ -14,7 +14,7 @@ class Order extends HiveObject {
   });
 
   String toMessage() {
-    final String issuerLine = issuer is String ? '@$issuer\n' : '';
+    final String issuerLine = issuer is String ? 'Прислал(-а) @$issuer\n' : '';
 
     return '$issuerLine$link';
   }

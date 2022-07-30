@@ -13,3 +13,5 @@ import '../misc/emoji.dart';
 part 'dto.dart';
 
 part 'service.dart';
+
+part 'lib.g.dart';
