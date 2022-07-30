@@ -3,9 +3,16 @@
 .packages
 pubspec.lock
 
-# Conventional directory for build output.
+# Build files and directories
 build/
+*.g.dart
+lib/src/gen/
 
 # Files and directories created by IDE
 dj_bot.iml
 .idea
+
+# Unnecessary dev files
+env.sh
+orders.hive
+orders.lock

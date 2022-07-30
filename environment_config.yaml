@@ -1,0 +1,22 @@
+environment_config:
+  path: src/gen/config.dart
+  class: BotConfig
+
+  fields:
+    token:
+      config_field: true
+
+    logLevel:
+      short_name: l
+      type: Level
+      default: ALL
+      pattern: 'Level.__VALUE__'
+      config_field: true
+
+    owner:
+      type: int
+      config_field: true
+
+
+  imports:
+    - package:logging/logging.dart
