@@ -9,6 +9,7 @@ dependencies:
   hive: ^2.2.3
   json_annotation: ^4.6.0
   logging: ^1.0.2
+  logging_appenders: ^1.0.0
   meta: ^1.8.0
   teledart: ^0.3.4
 
