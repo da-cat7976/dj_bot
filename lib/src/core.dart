@@ -1,3 +1,4 @@
+import 'package:logging/logging.dart';
 import 'package:teledart/model.dart';
 import 'package:teledart/teledart.dart';
 import 'package:teledart/telegram.dart';
@@ -5,6 +6,8 @@ import 'package:teledart/telegram.dart';
 import 'gen/config.dart';
 
 class DjBot {
+  static Logger logger(String name) => Logger(name)..level = BotConfig.logLevel;
+
   final Iterable<DjBotDelegate> delegates;
 
   TeleDart? _client;
