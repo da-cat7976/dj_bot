@@ -31,6 +31,9 @@ abstract class DjBotDelegate {
 
   @protected
   FutureOr<void> dispose() {}
+
+  DelegateType delegateOf<DelegateType extends DjBotDelegate>() =>
+      _bot!.delegateOf<DelegateType>();
 }
 
 abstract class ListeningDjBotDelegate extends DjBotDelegate {

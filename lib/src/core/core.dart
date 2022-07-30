@@ -43,7 +43,7 @@ class DjBot {
     _logger.info('Stopped');
   }
 
-  DjBotDelegate delegateOf<DelegateType extends DjBotDelegate>() {
+  DelegateType delegateOf<DelegateType extends DjBotDelegate>() {
     for (DjBotDelegate delegate in delegates)
       if (delegate is DelegateType) return delegate;
 
