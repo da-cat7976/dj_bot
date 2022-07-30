@@ -1,5 +1,5 @@
 import 'package:dj_bot/src/actions/link.dart';
-import 'package:dj_bot/src/core.dart';
+import 'package:dj_bot/src/core/core.dart';
 import 'package:dj_bot/src/gen/config.dart';
 import 'package:logging/logging.dart';
 import 'package:logging_appenders/logging_appenders.dart';
