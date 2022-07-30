@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:logging/logging.dart';
+import 'package:meta/meta.dart';
 import 'package:teledart/model.dart';
 import 'package:teledart/teledart.dart';
 import 'package:teledart/telegram.dart';
@@ -54,25 +56,64 @@ class DjBot {
 typedef MessageStreamListener = void Function(TeleDartMessage message);
 
 abstract class DjBotDelegate {
+  @protected
   late final Logger logger;
 
+  late final _TelegramStreamDispatcher _dispatcher;
+
+  @protected
   TeleDart get client => _bot!.client;
 
   DjBot? _bot;
-
-  final Map<MessageStreamListener, StreamSubscription<TeleDartMessage>>
-      _subscriptions = {};
 
   Future<void> _init(DjBot bot) async {
     logger = DjBot.logger(
       runtimeType.toString(),
     );
+    _dispatcher = _TelegramStreamDispatcher(logger);
 
     _bot = bot;
     await init();
 
-    logger.info('Initialized with ${_subscriptions.length} listeners');
+    logger.info('Initialized with ${_dispatcher.streamCount} listeners');
   }
+
+  Future<void> _dispose() async {
+    await _dispatcher.dispose();
+    await dispose();
+
+    logger.info('Disposed');
+  }
+
+  @protected
+  FutureOr<void> init();
+
+  @protected
+  FutureOr<void> dispose() {}
+
+  @protected
+  void listen({
+    required Stream<TeleDartMessage> stream,
+    required MessageStreamListener listener,
+  }) =>
+      _dispatcher.listen(
+        stream: stream,
+        listener: listener,
+      );
+
+  @protected
+  void stop(MessageStreamListener listener) => _dispatcher.stop(listener);
+}
+
+class _TelegramStreamDispatcher {
+  final Logger logger;
+
+  final Map<MessageStreamListener, StreamSubscription<TeleDartMessage>>
+      _subscriptions = {};
+
+  int get streamCount => _subscriptions.length;
+
+  _TelegramStreamDispatcher(this.logger);
 
   void listen({
     required Stream<TeleDartMessage> stream,
@@ -81,8 +122,16 @@ abstract class DjBotDelegate {
     if (_subscriptions[listener] is StreamSubscription)
       throw StateError('Listener should not be used multiple times');
 
-    final StreamSubscription<TeleDartMessage> subscription =
-        stream.listen(listener);
+    final StreamSubscription<TeleDartMessage> subscription = stream.listen(
+      (event) {
+        final String eventString = JsonEncoder.withIndent('  ').convert(
+          event.toJson(),
+        );
+
+        logger.finest('Got new message:\n$eventString');
+        listener(event);
+      },
+    );
 
     _subscriptions[listener] = subscription;
   }
@@ -93,17 +142,10 @@ abstract class DjBotDelegate {
     if (subscription is StreamSubscription) await subscription.cancel();
   }
 
-  Future<void> _dispose() async {
+  Future<void> dispose() async {
     for (StreamSubscription subscription in _subscriptions.values)
       await subscription.cancel();
 
     _subscriptions.clear();
-    dispose();
-
-    logger.info('Disposed');
   }
-
-  FutureOr<void> init();
-
-  FutureOr<void> dispose() {}
 }
