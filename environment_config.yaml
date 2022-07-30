@@ -13,6 +13,10 @@ environment_config:
       pattern: 'Level.__VALUE__'
       config_field: true
 
+    owner:
+      type: int
+      config_field: true
+
 
   imports:
     - package:logging/logging.dart
