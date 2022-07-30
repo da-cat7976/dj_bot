@@ -21,7 +21,7 @@ abstract class LinkOrderParser extends MessageOrderParser {
 
 class YandexLinkParser extends LinkOrderParser {
   @override
-  final RegExp pattern = RegExp(r'https:\/\/music\.yandex\.ru\/[^ ]*');
+  final RegExp pattern = RegExp(r'https:\/\/music\.yandex\.(ru|com)\/[^ ]*');
 }
 
 class VkLinkParser extends LinkOrderParser {
