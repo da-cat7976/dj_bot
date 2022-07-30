@@ -1,3 +1,4 @@
+import 'package:dj_bot/src/actions/control.dart';
 import 'package:dj_bot/src/actions/hello.dart';
 import 'package:dj_bot/src/actions/link.dart';
 import 'package:dj_bot/src/core/lib.dart';
@@ -21,6 +22,7 @@ void main() {
       ),
       OrderFromLink(),
       HelloAction(),
+      OrderListControls(),
     ],
   ).start();
 }
