@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:dj_bot/src/core/core.dart';
 import 'package:teledart/model.dart';
+
+import '../core/lib.dart';
 
 class LinkAction extends ListeningDjBotDelegate {
   @override
