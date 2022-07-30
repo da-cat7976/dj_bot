@@ -1,7 +1,13 @@
 part of dj_bot.orders;
 
 class OrderService extends DjBotDelegate {
+  final Iterable<MessageOrderParser> parsers;
+
   late final Box<Order> _box;
+
+  OrderService({
+    required this.parsers,
+  });
 
   @override
   FutureOr<void> init() async {
@@ -12,6 +18,19 @@ class OrderService extends DjBotDelegate {
     await _box.add(order);
 
     informOwner(order);
+  }
+
+  Future<bool> addFrom(TeleDartMessage message) async {
+    for (MessageOrderParser parser in parsers) {
+      final Order? order = parser.create(message);
+
+      if (order is Order) {
+        await add(order);
+        return true;
+      }
+    }
+
+    return false;
   }
 
   Iterable<Order> all() => _box.values;
@@ -29,4 +48,8 @@ class OrderService extends DjBotDelegate {
       '${order.toMessage()}',
     );
   }
+}
+
+abstract class MessageOrderParser {
+  Order? create(TeleDartMessage message);
 }

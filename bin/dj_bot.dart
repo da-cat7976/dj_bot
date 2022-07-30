@@ -11,10 +11,10 @@ void main() {
 
   DjBot(
     delegates: [
-      OrderService(),
-      OrderFromLink(
-        factories: [],
+      OrderService(
+        parsers: [],
       ),
+      OrderFromLink(),
     ],
   ).start();
 }

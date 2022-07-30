@@ -1,19 +1,12 @@
 import 'dart:async';
 
 import 'package:dj_bot/src/core/lib.dart';
+import 'package:dj_bot/src/misc/emoji.dart';
 import 'package:dj_bot/src/orders/lib.dart';
 import 'package:teledart/model.dart';
 
-import '../misc/emoji.dart';
-
 class OrderFromLink extends ListeningDjBotDelegate {
-  final Iterable<LinkOrderFactory> factories;
-
   late final OrderService _service;
-
-  OrderFromLink({
-    required this.factories,
-  });
 
   @override
   FutureOr<void> init() {
@@ -23,22 +16,13 @@ class OrderFromLink extends ListeningDjBotDelegate {
   }
 
   void onLink(TeleDartMessage message) async {
-    for (LinkOrderFactory factory in factories)
-      if (message.text!.contains(factory.pattern)) {
-        final Order order = factory.create(message);
-        _service.add(order);
+    final bool result = await _service.addFrom(message);
 
-        await message.reply(
-          '${Emoji.note} Заказ принят!\n'
-          '${order.toMessage()}',
-        );
-        return;
-      }
+    if (result)
+      await message.reply(
+        '${Emoji.disc} Заказ принят',
+      );
+    else if (message.chat.type == 'private')
+      await message.reply('Кажется, я не умею работать с такими ссылками');
   }
-}
-
-abstract class LinkOrderFactory {
-  Pattern get pattern;
-
-  Order create(TeleDartMessage message);
 }
