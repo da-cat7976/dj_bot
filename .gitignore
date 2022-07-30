@@ -14,3 +14,5 @@ dj_bot.iml
 
 # Unnecessary dev files
 env.sh
+orders.hive
+orders.lock
