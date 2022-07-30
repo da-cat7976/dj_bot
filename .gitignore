@@ -1,0 +1,11 @@
+# Files and directories created by pub.
+.dart_tool/
+.packages
+pubspec.lock
+
+# Conventional directory for build output.
+build/
+
+# Files and directories created by IDE
+dj_bot.iml
+.idea
