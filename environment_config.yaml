@@ -1,0 +1,7 @@
+environment_config:
+  path: src/gen/config.dart
+  class: BotConfig
+
+  fields:
+    token:
+      config_field: true
