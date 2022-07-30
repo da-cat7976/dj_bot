@@ -7,6 +7,9 @@ import 'package:dj_bot/src/orders/lib.dart';
 import 'package:teledart/model.dart';
 
 class OrderListControls extends ListeningDjBotDelegate {
+
+  static const int safeListLength = 3000;
+
   late final OrderService _service;
 
   @override
@@ -29,9 +32,14 @@ class OrderListControls extends ListeningDjBotDelegate {
     if (orders.isNotEmpty)
       for (int i = 0; i < orders.length; i++) {
         final int number = i + 1;
-        final String message = orders.elementAt(i).toMessage();
+        final String orderMessage = orders.elementAt(i).toMessage();
 
-        reply += '$number) $message\n\n';
+        reply += '$number) $orderMessage\n\n';
+
+        if (reply.length > safeListLength) {
+          await message.reply(reply, disable_web_page_preview: true);
+          reply = '';
+        }
       }
     else
       reply += 'А их и нет))0)';
